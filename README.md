@@ -17,17 +17,44 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+For each song, compare its attributes with the user's preferences and calculate a score from 0 to 100. Higher scores indicate a closer match.
 
-Some prompts to answer:
+### Proposed scoring rule
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+Use these weights:
 
-You can include a simple diagram or bullet list if helpful.
+| Feature | Weight |
+|---|---:|
+| Genre | 0.30 |
+| Mood | 0.25 |
+| Energy | 0.15 |
+| Tempo | 0.10 |
+| Valence | 0.06 |
+| Danceability | 0.06 |
+| Acousticness | 0.06 |
+| Artist | 0.02 |
+
+For genre, mood, and artist, the feature similarity is `1` for an exact match and `0` otherwise. For energy, valence, danceability, and acousticness (each already on a 0–1 scale), use:
+
+```text
+similarity = 1 - abs(song_value - preferred_value)
+```
+
+For tempo, convert the BPM difference into a 0–1 similarity using a 160 BPM reference range:
+
+```text
+similarity = max(0, 1 - abs(song_tempo_bpm - preferred_tempo_bpm) / 160)
+```
+
+Then calculate:
+
+```text
+score = 100 * sum(weight * similarity) / sum(weights for preferences provided)
+```
+
+Only include features for which the user has provided a preference in the sums, so missing preferences do not lower a song's score. Rank songs by score, highest first. Artist has only a small influence, while genre and mood together account for more than half of the score.
+
+I opted for these rules because based on my research and personal thoughts, genre and mood should be the biggest contributors to the score. Then energy and tempo matter, but not as much as genre and mood. The rest of the factors come below this. Artist is below all because it could too heavily skew the results especially with a small data set.
 
 ---
 
@@ -71,12 +98,40 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+Loaded songs: 20
+
+Top recommendations
+====================
+
+1. Sunrise City  |  Score: 99.57/100
+   Reasons:
+   - genre match (+42.9)
+   - mood match (+35.7)
+   - energy similarity (+21.0)
+
+2. Gym Hero  |  Score: 61.50/100
+   Reasons:
+   - genre match (+42.9)
+   - mood mismatch (+0.0)
+   - energy similarity (+18.6)
+
+3. Rooftop Lights  |  Score: 56.29/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood match (+35.7)
+   - energy similarity (+20.6)
+
+4. Sunday Steps  |  Score: 21.21/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood mismatch (+0.0)
+   - energy similarity (+21.2)
+
+5. Midnight Carnival  |  Score: 20.79/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood mismatch (+0.0)
+   - energy similarity (+20.8)
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
@@ -117,6 +172,5 @@ Write 1 to 2 paragraphs here about what you learned:
 
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
-
 
 
