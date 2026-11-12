@@ -69,9 +69,9 @@ def load_songs(csv_path: str) -> List[Dict]:
 def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     """Return a song's weighted similarity score and feature-level reasons."""
     weights = {
-        "genre": 0.30,
+        "genre": 0.15,
         "mood": 0.25,
-        "energy": 0.15,
+        "energy": 0.30,
         "tempo_bpm": 0.10,
         "valence": 0.06,
         "danceability": 0.06,

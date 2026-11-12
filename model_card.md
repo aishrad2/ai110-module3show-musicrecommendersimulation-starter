@@ -5,7 +5,7 @@
 Give your model a short, descriptive name.  
 Example: **VibeFinder 1.0**
 
-**Answer:** Vibe Match
+Music Match
 
 ---
 
@@ -19,7 +19,7 @@ Prompts:
 - What assumptions does it make about the user
 - Is this for real users or classroom exploration
 
-**Answer:** It suggests songs from a small catalog based on a taste profile. It assumes the profile describes what the listener wants. This is for classroom exploration, not a finished product for real users.
+ It suggests songs from a small catalog based on a taste profile. It assumes the profile describes what the listener wants.
 
 ---
 
@@ -36,7 +36,7 @@ Prompts:
 
 Avoid code here. Pretend you are explaining the idea to a friend who does not program.
 
-**Answer:** The model compares genre, mood, energy, tempo, valence, danceability, acousticness, and artist with the user's preferences. Genre (30%) and mood (25%) matter most. Energy (15%) and tempo (10%) come next. Valence, danceability, and acousticness are 6% each, and artist is 2%. Exact genre, mood, or artist matches earn their feature's points. Numeric features score higher when closer to the target; tempo differences are scaled by 160 BPM. The total score is from 0 to 100 and only includes preferences provided. The model also gives reasons showing each feature's contribution. Compared with the starter, I added CSV loading, scoring, explanations, and sorting by score.
+ The model compares genre, mood, energy, tempo, valence, danceability, acousticness, and artist with the user's preferences. Genre is weighted at 15% and mood at 25%; energy has the largest weight at 30%, and tempo is 10%. Valence, danceability, and acousticness are 6% each, and artist is 2%. Exact genre, mood, or artist matches earn that feature's points. Numeric features score higher when closer to the target; tempo differences are scaled by 160 BPM. The total score is from 0 to 100 and only includes preferences provided. The model also gives reasons showing each feature's contribution. Compared with the starter, I added CSV loading, scoring, explanations, and sorting by score.
 
 ---
 
@@ -51,7 +51,7 @@ Prompts:
 - Did you add or remove data
 - Are there parts of musical taste missing in the dataset
 
-**Answer:** The catalog has 20 sample songs. Genres include pop, lofi, rock, ambient, jazz, synthwave, indie pop, classical, country, reggae, metal, folk, blues, electronic, funk, soul, and latin. Moods include happy, chill, intense, relaxed, focused, moody, serene, hopeful, playful, angry, nostalgic, lonely, euphoric, confident, romantic, and mysterious. I added 10 songs. The sample does not cover every style of music and uses simplified song features.
+ The catalog has 20 sample songs. Genres include pop, lofi, rock, ambient, jazz, synthwave, indie pop, classical, country, reggae, metal, folk, blues, electronic, funk, soul, and latin. Moods include happy, chill, intense, relaxed, focused, moody, serene, hopeful, playful, angry, nostalgic, lonely, euphoric, confident, romantic, and mysterious. I added 10 songs. The sample does not cover every style of music and uses simplified song features.
 
 ---
 
@@ -65,7 +65,7 @@ Prompts:
 - Any patterns you think your scoring captures correctly
 - Cases where the recommendations matched your intuition
 
-**Answer:** It works best for listeners with clear genre and mood preferences. Those features have the strongest effect, while audio targets help separate songs with similar labels. For the pop/happy profile, “Sunrise City” ranks first, as expected. The lofi/chill profile also ranks lofi songs above intense rock.
+ It works best for listeners with clear genre and mood preferences. Those features have the strongest effect, while audio targets help separate songs with similar labels. For the pop/happy profile, “Sunrise City” ranks first, as expected. The lofi/chill profile also ranks lofi songs above intense rock.
 
 ---
 
@@ -80,7 +80,7 @@ Prompts:
 - Cases where the system overfits to one preference
 - Ways the scoring might unintentionally favor some users
 
-**Answer:** The catalog is small, so some genres and moods have only one song. The model does not consider lyrics, context, or changing moods. It uses exact matches for genre and mood, so “indie pop” does not count as “pop.” Genre and mood have high weights, so they can dominate other similarities. Users with more preferences in their profile may also get different score behavior because only provided preferences are counted.
+The catalog is small, so some genres and moods have only one song, and the model does not account for lyrics, listening context, or changing moods. Genre and mood matches are exact indie pop, for example, does not count as pop and a mismatch earns no points for that feature. Since genre and mood together make up 40% of the base weight, they can strongly shape the results and reinforce a listener’s existing preferences. Scores are also recalculated using only the preferences a user provides, so a profile with just an energy target is ranked entirely by energy, while a profile with genre and mood preferences is more influenced by those categories. The model does not validate target ranges: an energy target above 1 can favor the most energetic songs in the catalog instead of warning that the target is out of range.
 
 ---
 
@@ -97,7 +97,7 @@ Prompts:
 
 No need for numeric metrics unless you created some.
 
-**Answer:** I tried the pop/happy and lofi/chill profiles. I checked that songs matching the genre and mood ranked higher, with numeric features helping distinguish songs further. “Sunrise City” ranked first for the pop/happy profile, and lofi songs ranked above “Storm Runner” for the lofi/chill profile. These results matched my expectations. The existing starter tests pass, but they do not fully test every feature of the scoring logic.
+ I tested default pop, lofi, high-energy pop, intense rock, mellow folk, high-energy sad, conflicting, impossible, single-preference, out-of-range, and capitalization-variation profiles. The matching pop, lofi, rock, and folk songs generally ranked highest; profiles with mixed or impossible preferences returned partial matches. I was surprised that “Blue Window” topped the high-energy sad list because its lonely mood mattered more than its low energy, and that a single artist preference gave two songs perfect scores. The capitalization test produced the same results, while unrealistic targets were not flagged.
 
 ---
 
@@ -112,7 +112,7 @@ Prompts:
 - Improving diversity among the top results
 - Handling more complex user tastes
 
-**Answer:** I could add more songs, allow several favorite genres or moods, and give partial credit to related genres. I could also make the top results more varied and test more profiles.
+I could add more songs, allow several favorite genres or moods, and give partial credit to related genres. I could also make the top results more varied and test more profiles.
 
 ---
 
@@ -126,4 +126,4 @@ Prompts:
 - Something unexpected or interesting you discovered
 - How this changed the way you think about music recommendation apps
 
-**Answer:** I learned that a recommender's choices about features and weights shape what it calls similar. It was interesting how changing the profile changes the recommended songs. Music apps also depend on their data and scoring rules, even when their suggestions seem personal.
+ I learned that a recommender's choices about features and weights shape what it calls similar. It was interesting how changing the profile changes the recommended songs. Music apps also depend on their data and scoring rules, even when their suggestions seem personal.

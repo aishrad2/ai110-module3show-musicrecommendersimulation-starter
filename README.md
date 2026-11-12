@@ -146,6 +146,43 @@ Use this section to document the experiments you ran. For example:
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
 
+```
+Loaded songs: 20
+
+Top recommendations
+====================
+
+1. Sunrise City  |  Score: 99.57/100
+   Reasons:
+   - genre match (+42.9)
+   - mood match (+35.7)
+   - energy similarity (+21.0)
+
+2. Gym Hero  |  Score: 61.50/100
+   Reasons:
+   - genre match (+42.9)
+   - mood mismatch (+0.0)
+   - energy similarity (+18.6)
+
+3. Rooftop Lights  |  Score: 56.29/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood match (+35.7)
+   - energy similarity (+20.6)
+
+4. Sunday Steps  |  Score: 21.21/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood mismatch (+0.0)
+   - energy similarity (+21.2)
+
+5. Midnight Carnival  |  Score: 20.79/100
+   Reasons:
+   - genre mismatch (+0.0)
+   - mood mismatch (+0.0)
+   - energy similarity (+20.8)
+```
+
 ---
 
 ## Limitations and Risks
